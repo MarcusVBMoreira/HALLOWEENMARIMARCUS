@@ -6,7 +6,7 @@ The project was built with PHP, MySQL, JavaScript, HTML, and CSS, featuring a fu
 
 ## 🌐 Live Website
 
-:contentReference[oaicite:0]{index=0}
+https://halloweenmarimarcus.com.br:contentReference[oaicite:0]{index=0}
 
 ---
 
