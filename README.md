@@ -6,7 +6,7 @@ The project was built with PHP, MySQL, JavaScript, HTML, and CSS, featuring a fu
 
 ## 🌐 Live Website
 
-https://halloweenmarimarcus.com.br:contentReference[oaicite:0]{index=0}
+https://halloweenmarimarcus.com.br
 
 ---
 
@@ -54,12 +54,6 @@ https://halloweenmarimarcus.com.br:contentReference[oaicite:0]{index=0}
 ## 🚀 Purpose
 
 The platform was developed to transform a traditional Halloween party into a competitive and interactive experience, combining games, drinking challenges, team rankings, and social interaction in a fun and immersive way.
-
----
-
-## 📸 Screenshots
-
-(Screenshots will be added soon)
 
 ---
 
