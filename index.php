@@ -210,7 +210,7 @@ include 'includes/header.php';
                     <div class="icon"><span class="img-icon"><img src="<?= BASE_URL ?>assets/images/icons/relogio-laranja.png" class="icon-img" alt=""></span></div>
                     <div class="cotent-about-item">
                         <span class="label">HORÁRIO</span>
-                        <p>20:00</p>
+                        <p>18:00</p>
                     </div>
                 </div>
 

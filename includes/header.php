@@ -8,7 +8,7 @@
     <title>HALLOWEEN 2026</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css?v=<?= filemtime(__DIR__ . '/../assets/css/style.css') ?>">
     <link rel="icon" type="image/png" href="<?= BASE_URL ?>assets/images/favicon.png">
 </head>
 

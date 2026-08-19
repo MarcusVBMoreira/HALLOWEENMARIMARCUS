@@ -55,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         if ($action === 'create_game') {
             $name = trim($_POST['name'] ?? '');
+            $video = trim($_POST['video'] ?? '');
             $description = trim($_POST['description'] ?? '');
             $how_to_play = trim($_POST['how_to_play'] ?? '');
             $rules = trim($_POST['rules'] ?? '');
@@ -70,13 +71,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $stmt = $pdo->prepare("
                     INSERT INTO games 
-                    (name, image, description, how_to_play, rules, player_points, team_points, game_order, is_active)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    (name, image, video, description, how_to_play, rules, player_points, team_points, game_order, is_active)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ");
 
                 $stmt->execute([
                     $name,
                     $imagePath,
+                    $video !== '' ? $video : null,
                     $description,
                     $how_to_play,
                     $rules,
@@ -93,6 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($action === 'update_game') {
             $game_id = (int) ($_POST['game_id'] ?? 0);
             $name = trim($_POST['name'] ?? '');
+            $video = trim($_POST['video'] ?? '');
             $description = trim($_POST['description'] ?? '');
             $how_to_play = trim($_POST['how_to_play'] ?? '');
             $rules = trim($_POST['rules'] ?? '');
@@ -115,6 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     SET 
                         name = ?,
                         image = ?,
+                        video = ?,
                         description = ?,
                         how_to_play = ?,
                         rules = ?,
@@ -128,6 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->execute([
                     $name,
                     $imagePath,
+                    $video !== '' ? $video : null,
                     $description,
                     $how_to_play,
                     $rules,
@@ -234,7 +239,7 @@ function gameTypeLabel($game) {
         <div class="admin-header">
             <div>
                 <h1>Gerenciar Jogos</h1>
-                <p>Cadastre imagem, regras, descrição, modo de jogar e pontuação.</p>
+                <p>Cadastre imagem, vídeo, regras, descrição, modo de jogar e pontuação.</p>
             </div>
 
             <span class="admin-user">
@@ -283,6 +288,16 @@ function gameTypeLabel($game) {
                                 <img src="<?= BASE_URL . htmlspecialchars($editGame['image']) ?>" alt="Imagem atual do jogo">
                             </div>
                         <?php endif; ?>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Link do vídeo (YouTube, Vimeo ou .mp4)</label>
+                        <input 
+                            type="text" 
+                            name="video" 
+                            placeholder="https://www.youtube.com/watch?v=..."
+                            value="<?= htmlspecialchars($editGame['video'] ?? '') ?>"
+                        >
                     </div>
 
                     <div class="form-group">
@@ -407,6 +422,7 @@ function gameTypeLabel($game) {
                             <th>Imagem</th>
                             <th>Jogo</th>
                             <th>Tipo</th>
+                            <th>Vídeo</th>
                             <th>Pontos jogador</th>
                             <th>Pontos equipe</th>
                             <th>Status</th>
@@ -417,7 +433,7 @@ function gameTypeLabel($game) {
                     <tbody>
                         <?php if (count($games) === 0): ?>
                             <tr>
-                                <td colspan="8">Nenhum jogo cadastrado ainda.</td>
+                                <td colspan="9">Nenhum jogo cadastrado ainda.</td>
                             </tr>
                         <?php endif; ?>
 
@@ -448,6 +464,15 @@ function gameTypeLabel($game) {
                                 </td>
 
                                 <td><?= htmlspecialchars(gameTypeLabel($game)) ?></td>
+
+                                <td>
+                                    <?php if (!empty($game['video'])): ?>
+                                        <span class="status-active">Sim</span>
+                                    <?php else: ?>
+                                        <span class="status-inactive">Não</span>
+                                    <?php endif; ?>
+                                </td>
+
                                 <td><?= (int)$game['player_points'] ?></td>
                                 <td><?= (int)$game['team_points'] ?></td>
 
