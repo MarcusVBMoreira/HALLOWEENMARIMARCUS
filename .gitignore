@@ -1,0 +1,6 @@
+# Credenciais de produção (nunca versionar)
+includes/config.production.php
+halloween_db.php
+
+# Arquivos enviados pelo site (ficam só no servidor)
+assets/uploads/

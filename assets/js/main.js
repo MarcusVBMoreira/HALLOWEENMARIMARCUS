@@ -53,7 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // CONTADOR REGRESSIVO COM FLIP SIMPLES
-const eventDate = new Date(2026, 9, 31, 18, 0, 0).getTime();
+// 28/11/2026 às 18:00 (horário de Brasília, UTC-3)
+const eventDate = new Date('2026-11-28T18:00:00-03:00').getTime();
 
 const countdown = document.querySelector(".countdown");
 
@@ -75,6 +76,8 @@ function updateFlipNumber(element, value) {
 }
 
 function updateCountdown() {
+    if (!countdown || !daysEl || !hoursEl || !minutesEl || !secondsEl) return;
+
     const now = Date.now();
     const distance = eventDate - now;
 
@@ -99,17 +102,20 @@ function updateCountdown() {
     updateFlipNumber(secondsEl, seconds);
 }
 
-updateCountdown();
+let interval = null;
 
-const interval = setInterval(updateCountdown, 1000);
+if (countdown) {
+    interval = setInterval(updateCountdown, 1000);
+    updateCountdown();
+}
 
-const modal = document.getElementById('gameModal');
+const gameModal = document.getElementById('gameModal');
 
-if (modal) {
+if (gameModal) {
     /* =========================
     GAME MODAL (com vídeo)
     ========================= */
-    const modal = document.getElementById('gameModal');
+    const modal = gameModal;
     const buttons = document.querySelectorAll('.open-game-modal');
 
     const modalImage = document.getElementById('modalGameImage');

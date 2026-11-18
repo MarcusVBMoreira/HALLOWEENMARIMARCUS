@@ -104,7 +104,7 @@ body {
 /* HERO */
 .hero {
     min-height: 100vh;
-    background: url('/HALLOWEEN_2026/assets/images/bg-halloween.jpg') center/cover no-repeat;
+    background: url('../images/bg-halloween.jpg') center/cover no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1135,7 +1135,7 @@ html {
    SOBRE O EVENTO
 ========================= */
 .about-box {
-    background: url('/HALLOWEEN_2026/assets/images/sobre_evento.png') center/cover no-repeat;
+    background: url('../images/sobre_evento.png') center/cover no-repeat;
     position: relative;
     overflow: hidden;
 }
@@ -1191,7 +1191,7 @@ html {
    VOTAÇÃO COM IMAGEM
 ========================= */
 .vote-box {
-    background: url('/HALLOWEEN_2026/assets/images/fantasia.png') center/cover no-repeat;
+    background: url('../images/fantasia.png') center/cover no-repeat;
     position: relative;
     overflow: hidden;
 }
@@ -1221,7 +1221,7 @@ html {
     aspect-ratio: 341 / 92;
     margin-top: 15px;
 
-    background: url('/HALLOWEEN_2026/assets/images/regras.png') center/cover no-repeat;
+    background: url('../images/regras.png') center/cover no-repeat;
 
     border-radius: 8px;
 }
@@ -1488,7 +1488,7 @@ html {
     min-height: 100vh;
     background:
         linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.9)),
-        url('/HALLOWEEN_2026/assets/images/bg-halloween.jpg') center/cover no-repeat;
+        url('../images/bg-halloween.jpg') center/cover no-repeat;
 
     display: flex;
     justify-content: center;
@@ -2222,7 +2222,7 @@ html {
     min-height: 100vh;
     background:
         linear-gradient(rgba(0,0,0,0.78), rgba(0,0,0,0.95)),
-        url('/HALLOWEEN_2026/assets/images/bg-halloween.jpg') center/cover no-repeat;
+        url('../images/bg-halloween.jpg') center/cover no-repeat;
     padding: 40px 20px;
 }
 
@@ -2385,7 +2385,7 @@ html {
     min-height: 100vh;
     background:
         linear-gradient(rgba(0,0,0,0.82), rgba(0,0,0,0.96)),
-        url('/HALLOWEEN_2026/assets/images/bg-halloween.jpg') center/cover fixed no-repeat;
+        url('../images/bg-halloween.jpg') center/cover fixed no-repeat;
     padding: 130px 20px 70px;
 }
 

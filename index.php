@@ -202,7 +202,7 @@ include 'includes/header.php';
                     <div class="icon"><span class="img-icon"><img src="<?= BASE_URL ?>assets/images/icons/calendario-laranja.png" class="icon-img" alt=""></span></div>
                     <div class="cotent-about-item">
                         <span class="label">DATA</span>
-                        <p>31/10/2026</p>
+                        <p>28/11/2026</p>
                     </div>
                 </div>
 
