@@ -276,11 +276,26 @@ function renderPlayers(list, color) {
 
 let showFullScoreboard = false;
 let currentRanking = [];
+let scoresHidden = false;
+
+function formatScore(value) {
+    return value === null || value === undefined ? '??' : parseInt(value);
+}
 
 function renderScoreboard(ranking) {
     const scoreboard = document.getElementById('scoreboard-live');
 
     currentRanking = ranking || [];
+
+    if (scoresHidden) {
+        scoreboard.innerHTML = `
+            <p class="scoreboard-hidden-msg">
+                <span>🎃</span>
+                <span>Placar oculto até a grande revelação!</span>
+                <span>?? pts</span>
+            </p>`;
+        return;
+    }
 
     if (currentRanking.length === 0) {
         scoreboard.innerHTML = '<p><span>--</span><span>Nenhum jogador</span><span>0 pts</span></p>';
@@ -309,18 +324,24 @@ async function updateLiveData() {
 
         if (!data.success) return;
 
+        scoresHidden = !!data.hidden;
+
+        if (toggleScoreboardButton) {
+            toggleScoreboardButton.style.display = scoresHidden ? 'none' : '';
+        }
+
         const teamPurple = data.teams[0];
         const teamOrange = data.teams[1];
 
         if (teamPurple) {
             document.getElementById('team-purple-name').textContent = teamPurple.name;
-            document.getElementById('team-purple-score').textContent = parseInt(teamPurple.total_score);
+            document.getElementById('team-purple-score').textContent = formatScore(teamPurple.total_score);
             document.getElementById('team-purple-players').innerHTML = renderPlayers(teamPurple.players, 'purple');
         }
 
         if (teamOrange) {
             document.getElementById('team-orange-name').textContent = teamOrange.name;
-            document.getElementById('team-orange-score').textContent = parseInt(teamOrange.total_score);
+            document.getElementById('team-orange-score').textContent = formatScore(teamOrange.total_score);
             document.getElementById('team-orange-players').innerHTML = renderPlayers(teamOrange.players, 'orange');
         }
 

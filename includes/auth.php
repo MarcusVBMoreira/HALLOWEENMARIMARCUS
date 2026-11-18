@@ -21,7 +21,7 @@ function requireAdmin() {
     requireLogin();
 
     if (!isAdmin()) {
-        header("Location: " . BASE_URL . "pages/dashboard.php");
+        header("Location: " . BASE_URL . "index.php");
         exit;
     }
 }

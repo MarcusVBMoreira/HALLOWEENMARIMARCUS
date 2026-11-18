@@ -112,10 +112,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user_id = (int) ($_POST['user_id'] ?? 0);
 
         if ($user_id > 0) {
-            $stmt = $pdo->prepare("DELETE FROM users WHERE id = ? AND role = 'player'");
-            $stmt->execute([$user_id]);
+            try {
+                $stmt = $pdo->prepare("DELETE FROM users WHERE id = ? AND role = 'player'");
+                $stmt->execute([$user_id]);
 
-            $message = 'Jogador removido com sucesso.';
+                $message = 'Jogador removido com sucesso.';
+            } catch (PDOException $e) {
+                // Jogador com pontos/votos registrados não pode ser apagado (chaves do banco)
+                $error = 'Este jogador já tem pontos ou votos registrados e não pode ser excluído. Desative-o (desmarque "ativo") em vez de excluir.';
+            }
         }
     }
 }

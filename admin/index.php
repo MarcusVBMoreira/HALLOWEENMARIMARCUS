@@ -1,8 +1,18 @@
 <?php
 require_once '../includes/auth.php';
 require_once '../includes/db.php';
+require_once '../includes/functions.php';
 
 requireAdmin();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'toggle_scoreboard') {
+    setSetting($pdo, 'scoreboard_hidden', isScoreboardHidden($pdo) ? '0' : '1');
+
+    header("Location: " . BASE_URL . "admin/index.php");
+    exit;
+}
+
+$scoreboardHidden = isScoreboardHidden($pdo);
 
 $totalUsers = $pdo->query("SELECT COUNT(*) FROM users WHERE role = 'player'")->fetchColumn();
 $totalTeams = $pdo->query("SELECT COUNT(*) FROM teams")->fetchColumn();
@@ -118,6 +128,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'toggl
                     <?= $votingEnabled ? '<span class="img-icon-admin"><img src="../assets/images/icons/cadeado-roxo.png" class="icon-img-admin" alt="Jogos"></span> Bloquear Votação' : '<span class="img-icon-admin"><img src="../assets/images/icons/mascara-roxo.png" class="icon-img-admin" alt="Jogos"></span> Liberar Votação' ?>
                 </button>
             </form>
+        </div>
+
+        <div class="admin-panel" style="margin-top:25px;">
+            <h2>Grande Revelação</h2>
+
+            <p class="admin-note" style="margin-bottom:16px;">
+                <?php if ($scoreboardHidden): ?>
+                    🔒 O placar está <strong>OCULTO</strong> para o público: o site mostra "??" no lugar dos pontos e o ranking não aparece.
+                    Você continua vendo tudo em <a href="<?= BASE_URL ?>admin/results.php">Resultados</a>.
+                <?php else: ?>
+                    👀 O placar está <strong>VISÍVEL</strong> e atualiza sozinho no site. Oculte antes da reta final para fazer a revelação.
+                <?php endif; ?>
+            </p>
+
+            <div class="admin-actions">
+                <form method="POST" style="display:inline;">
+                    <input type="hidden" name="action" value="toggle_scoreboard">
+                    <button type="submit" class="btn <?= $scoreboardHidden ? 'btn-secondary' : 'btn-primary' ?>">
+                        <?= $scoreboardHidden ? '👀 Mostrar Placar' : '🔒 Ocultar Placar' ?>
+                    </button>
+                </form>
+
+                <a href="<?= BASE_URL ?>admin/reveal.php" class="btn btn-primary">🎃 Abrir Revelação dos Vencedores</a>
+            </div>
         </div>
 
     </main>

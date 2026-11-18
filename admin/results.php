@@ -14,7 +14,7 @@ $games = $pdo->query("
 ")->fetchAll();
 
 $players = $pdo->query("
-    SELECT users.id, users.name, teams.name AS team_name
+    SELECT users.id, users.name, users.team_id, teams.name AS team_name
     FROM users
     LEFT JOIN teams ON users.team_id = teams.id
     WHERE users.role = 'player'
@@ -278,7 +278,7 @@ $rankingTeams = $pdo->query("
                             <option value="">Não pontua jogador / sem vencedor individual</option>
 
                             <?php foreach ($players as $player): ?>
-                                <option value="<?= $player['id'] ?>">
+                                <option value="<?= $player['id'] ?>" data-team="<?= (int)$player['team_id'] ?>">
                                     <?= htmlspecialchars($player['name']) ?>
                                     <?= $player['team_name'] ? ' — ' . htmlspecialchars($player['team_name']) : '' ?>
                                 </option>
@@ -395,6 +395,23 @@ $rankingTeams = $pdo->query("
     </main>
 
 </section>
+
+<script>
+// Ao escolher o jogador vencedor, já seleciona o time dele
+// (dá para trocar manualmente se precisar).
+(function () {
+    const playerSelect = document.querySelector('select[name="winner_user_id"]');
+    const teamSelect = document.querySelector('select[name="winner_team_id"]');
+    if (!playerSelect || !teamSelect) return;
+
+    playerSelect.addEventListener('change', () => {
+        const teamId = playerSelect.selectedOptions[0]?.dataset.team;
+        if (teamId && teamId !== '0') {
+            teamSelect.value = teamId;
+        }
+    });
+})();
+</script>
 
 </body>
 </html>

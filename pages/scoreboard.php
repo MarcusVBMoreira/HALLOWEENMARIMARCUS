@@ -88,8 +88,24 @@ function renderPlayers(list) {
     `).join('');
 }
 
+let scoresHidden = false;
+
+function formatScore(value) {
+    return value === null || value === undefined ? '??' : parseInt(value);
+}
+
 function renderRanking(ranking) {
     const container = document.getElementById('scoreboard-list');
+
+    if (scoresHidden) {
+        container.innerHTML = `
+            <div class="score-row leader">
+                <span>🎃</span>
+                <span>Placar oculto até a grande revelação!</span>
+                <strong>?? pts</strong>
+            </div>`;
+        return;
+    }
 
     if (!ranking || ranking.length === 0) {
         container.innerHTML = '<p>Nenhum jogador</p>';
@@ -112,18 +128,20 @@ async function updateScoreboard() {
 
         if (!data.success) return;
 
+        scoresHidden = !!data.hidden;
+
         const team1 = data.teams[0];
         const team2 = data.teams[1];
 
         if (team1) {
             document.getElementById('team-purple-name').textContent = team1.name;
-            document.getElementById('team-purple-score').textContent = team1.total_score;
+            document.getElementById('team-purple-score').textContent = formatScore(team1.total_score);
             document.getElementById('team-purple-players').innerHTML = renderPlayers(team1.players);
         }
 
         if (team2) {
             document.getElementById('team-orange-name').textContent = team2.name;
-            document.getElementById('team-orange-score').textContent = team2.total_score;
+            document.getElementById('team-orange-score').textContent = formatScore(team2.total_score);
             document.getElementById('team-orange-players').innerHTML = renderPlayers(team2.players);
         }
 

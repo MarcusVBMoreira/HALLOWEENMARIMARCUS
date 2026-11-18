@@ -38,6 +38,9 @@ if (!$votingEnabled) {
     die("A votação ainda não foi liberada.");
 }
 
+// Só jogadores participam (o admin acompanha pelo painel, não envia foto nem vota)
+$isPlayer = ($currentUser['role'] ?? '') === 'player';
+
 /* =========================
    USUÁRIOS ATIVOS
 ========================= */
@@ -59,12 +62,26 @@ $allUploaded = $totalActive > 0 && $totalActive === $totalPhotos;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
+    // Foto maior que o limite do servidor: o PHP descarta o POST inteiro
+    if ($action === '' && empty($_POST) && (int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
+        $error = 'A foto é muito grande. Tente uma imagem menor (tire um print da foto, por exemplo).';
+    }
+
+    if (!$isPlayer && in_array($action, ['upload_photo', 'delete_photo', 'vote'], true)) {
+        $error = 'Apenas jogadores participam da votação de fantasia.';
+        $action = '';
+    }
+
     if (($action === 'upload_photo' || $action === 'delete_photo') && $allUploaded) {
         $error = 'Todas as fotos já foram enviadas. Não é mais possível alterar ou excluir fotos.';
     }
 
     if ($action === 'upload_photo' && !$allUploaded) {
-        if (!isset($_FILES['costume_photo']) || $_FILES['costume_photo']['error'] !== UPLOAD_ERR_OK) {
+        $uploadError = $_FILES['costume_photo']['error'] ?? UPLOAD_ERR_NO_FILE;
+
+        if (in_array($uploadError, [UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE], true)) {
+            $error = 'A foto é muito grande. Tente uma imagem menor (tire um print da foto, por exemplo).';
+        } elseif ($uploadError !== UPLOAD_ERR_OK) {
             $error = 'Envie uma imagem válida.';
         } else {
             $allowed = ['image/jpeg', 'image/png', 'image/webp'];
@@ -228,6 +245,15 @@ $candidates = array_filter($activeUsers, fn($u) =>
             <div class="admin-alert error"><?= htmlspecialchars($error) ?></div>
         <?php endif; ?>
 
+        <?php if (!$isPlayer): ?>
+        <div class="vote-panel">
+            <h2>Modo administrador</h2>
+            <p class="admin-note">
+                Você está logado como administrador: só jogadores enviam foto e votam.
+                Acompanhe o andamento em <a href="<?= BASE_URL ?>admin/costume_votes.php">Painel &rsaquo; Fantasias</a>.
+            </p>
+        </div>
+        <?php else: ?>
         <div class="vote-panel">
             <h2>Sua Fantasia</h2>
 
@@ -299,17 +325,22 @@ $candidates = array_filter($activeUsers, fn($u) =>
 
             <?php endif; ?>
         </div>
+        <?php endif; ?>
 
         <div class="vote-panel">
             <h2>Status da Votação</h2>
 
             <p class="admin-note">
-                <?= (int)$totalPhotos ?> de <?= (int)$totalActive ?> jogadores ativos já enviaram foto.
+                <span id="photos-count"><?= (int)$totalPhotos ?></span> de <span id="photos-total"><?= (int)$totalActive ?></span> jogadores ativos já enviaram foto.
             </p>
 
             <?php if (!$allUploaded): ?>
                 <p class="admin-note">
-                    A votação será liberada aqui quando todos os jogadores ativos enviarem suas fotos.
+                    A votação será liberada aqui automaticamente quando todos os jogadores ativos enviarem suas fotos.
+                </p>
+            <?php elseif (!$isPlayer): ?>
+                <p class="admin-note">
+                    Todas as fotos foram enviadas: a votação está aberta para os jogadores.
                 </p>
             <?php elseif ($myVote): ?>
                 <p class="admin-note">
@@ -348,6 +379,37 @@ $candidates = array_filter($activeUsers, fn($u) =>
 
     </div>
 </section>
+
+<?php if (!$allUploaded): ?>
+<script>
+// Enquanto faltar foto, verifica a cada 5s. Quando todos enviarem,
+// recarrega a página e a votação aparece sozinha.
+(function () {
+    const countEl = document.getElementById('photos-count');
+    const totalEl = document.getElementById('photos-total');
+
+    async function checkStatus() {
+        try {
+            const res = await fetch('<?= BASE_URL ?>api/vote.php?t=' + Date.now());
+            const data = await res.json();
+            if (!data.success) return;
+
+            countEl.textContent = data.photos;
+            totalEl.textContent = data.total;
+
+            // Não recarrega se a pessoa está escolhendo uma foto agora
+            const choosingFile = [...document.querySelectorAll('input[type=file]')].some(i => i.files.length > 0);
+
+            if (data.all_uploaded && !choosingFile) {
+                window.location.href = window.location.pathname;
+            }
+        } catch (e) {}
+    }
+
+    setInterval(checkStatus, 5000);
+})();
+</script>
+<?php endif; ?>
 
 </body>
 </html>
