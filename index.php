@@ -61,7 +61,7 @@ include 'includes/header.php';
             </div>
             <div>
                 <h3 class="title-purple">JOGOS INDIVIDUAIS</h3>
-                <p>Você pontua para você e para o seu time.</p>
+                <p>Vencedor ganha 3 pontos para si e 1 para o time.</p>
             </div>
         </div>
 
@@ -71,7 +71,7 @@ include 'includes/header.php';
             </div>
             <div>
                 <h3 class="title-orange">JOGOS EM EQUIPE</h3>
-                <p>Apenas o time pontua.</p>
+                <p>Apenas o time vencedor pontua: 3 pontos.</p>
             </div>
         </div>
 
@@ -81,7 +81,7 @@ include 'includes/header.php';
             </div>
             <div>
                 <h3 class="title-purple">DESAFIOS & BEBIDAS</h3>
-                <p>Ganhou? Escolhe o shot. Perdeu? Bebe 2 shots.</p>
+                <p>Ganhou? Bebe 1 shot. Perdeu? Bebe 2 shots.</p>
             </div>
         </div>
     </div>
@@ -233,10 +233,10 @@ include 'includes/header.php';
             </h2>
 
             <ul class="rules">
-                <li>✔ Respeite os jogos</li>
-                <li>✔ Beba com responsabilidade</li>
-                <li>✔ Sem celulares</li>
-                <li>✔ Divirta-se</li>
+                <li>✔ Venceu: 1 shot · Perdeu: 2 shots</li>
+                <li>✔ Fantasia obrigatória e criativa</li>
+                <li>✔ Celular só para o site do evento</li>
+                <li>✔ Beba com responsabilidade e divirta-se</li>
             </ul>
 
             <div class="rules-image"></div>

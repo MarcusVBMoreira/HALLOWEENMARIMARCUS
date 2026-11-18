@@ -2749,3 +2749,41 @@ html {
     height: 100%;
     border: none;
 }
+/* =========================
+   RULES PAGE - LISTAS
+========================= */
+.rule-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rule-list li {
+    color: var(--text-muted);
+    line-height: 1.6;
+    padding-left: 22px;
+    position: relative;
+}
+
+.rule-list li::before {
+    content: "🕸";
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+.rule-list strong {
+    color: #fff;
+}
+
+.rule-list a {
+    color: var(--primary);
+}
+
+.rule-card-highlight {
+    border-color: rgba(255,117,24,0.45);
+    box-shadow: 0 0 22px rgba(255,117,24,0.18);
+}
