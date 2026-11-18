@@ -4,3 +4,6 @@ halloween_db.php
 
 # Arquivos enviados pelo site (ficam só no servidor)
 assets/uploads/
+
+# Dump do banco (contem hashes de senha)
+*.sql
